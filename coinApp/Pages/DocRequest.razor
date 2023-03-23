@@ -1,0 +1,412 @@
+@page "/docrequest"
+@using Microsoft.Extensions.Logging
+@inject ILogger<Transactions> Logger
+
+<PageTitle>Document Request</PageTitle>
+<div class="container-fluid m">
+  <div class="row m-4">
+    <div class="col-md-2 bg-light h-100">
+        <h3>Filter</h3>
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="true"
+              aria-controls="collapseOne"
+            >
+              เอกสารสำคัญภาษาอังกฤษ
+            </button>
+          </h2>
+          <div
+            id="collapseOne"
+            class="accordion-collapse collapse show"
+            aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample"
+          >
+            <div class="accordion-body">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        ใบแสดงผลการศึกษา (EN)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        ใบรับรอง (EN)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        ใบแทนปริญญาบัตร (EN)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        ใบแปลปริญญาบัตร (EN)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        ใบรับรองคุณวุฒิ (EN)
+                    </label>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="true"
+              aria-controls="collapseOne"
+            >
+              เอกสารสำคัญภาษาไทย
+            </button>
+          </h2>
+          <div
+            id="collapseOne"
+            class="accordion-collapse collapse show"
+            aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample"
+          >
+            <div class="accordion-body">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        ใบแสดงผลการศึกษา (TH)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        ใบรับรอง (TH)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        ใบแทนปริญญาบัตร (TH)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        ใบแปลปริญญาบัตร (TH)
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        การแก้ไขข้อมูลนักศึกษาปัจจุบัน
+                    </label>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+       <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="true"
+              aria-controls="collapseOne"
+            >
+              Document Type
+            </button>
+          </h2>
+          <div
+            id="collapseOne"
+            class="accordion-collapse collapse show"
+            aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample"
+          >
+            <div class="accordion-body">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Electronic
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Electronic + Paper
+                    </label>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button
+              class="accordion-button"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseOne"
+              aria-expanded="true"
+              aria-controls="collapseOne"
+            >
+              Request Item Status
+            </button>
+          </h2>
+          <div
+            id="collapseOne"
+            class="accordion-collapse collapse show"
+            aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample"
+          >
+            <div class="accordion-body">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Waiting for Signature Register
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Waiting for MUCA
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Generated
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Waiting for Printing and Posting
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Waiting for Printing and Picking Up
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Waiting for Printing and Sending to the Faculty
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Posted/Available for pick up
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                    <label class="form-check-label" for="flexRadioDefault3">
+                        Received
+                    </label>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-10">
+        <div class="row g-3">
+            <div class="col-sm-4">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Search by student name or ID">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>ส่วนงาน</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <select class="form-select" aria-label="Default select example">
+                    <option selected>สาขา</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon3">Sort By</span>
+                    <select class="form-select" id="basic-url" aria-describedby="basic-addon3">
+                        <option selected>Major</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon3">Sort By</span>
+                    <select class="form-select" id="basic-url" aria-describedby="basic-addon3">
+                        <option selected>RequestID</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Select</th>
+            <th>Request ID</th>
+            <th>Student ID</th>
+            <th>Full Name</th>
+            <th>Document Type</th>
+            <th>Request Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach (var request in requests)
+          {
+            <tr @onclick="()=>DisplayDetails(request)">
+              <td><input type="checkbox" @bind="@request.Selected" /></td>
+              <td>@request.RequestID</td>
+              <td>@request.StudentID</td>
+              <td>@request.FullName</td>
+              <td>@request.DocType</td>
+              <td>@request.RequestDate.ToShortDateString()</td>
+              <td>@request.Status</td>
+              <td>
+                @if (request.Status == "Pending")
+                {
+                  <button class="btn btn-success" @onclick="()=>HandleAction(request)">
+                    Approve
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<Modal @ref="modal">
+  <Title>Request Information</Title>
+
+  <Body>
+    @if (selectedRequest != null)
+    {
+      <dl class="row">
+        <dt class="col-sm-3">Request ID</dt>
+        <dd class="col-sm-9">@selectedRequest.RequestID</dd>
+        <dt class="col-sm-3">Student ID</dt>
+        <dd class="col-sm-9">@selectedRequest.StudentID</dd>
+        <dt class="col-sm-3">Full Name</dt>
+        <dd class="col-sm-9">@selectedRequest.FullName</dd>
+        <dt class="col-sm-3">Document Type</dt>
+        <dd class="col-sm-9">@selectedRequest.DocType</dd>
+        <dt class="col-sm-3">Request Date</dt>
+        <dd class="col-sm-9">@selectedRequest.RequestDate.ToShortDateString()</dd>
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">@selectedRequest.Status</dd>
+      </dl>
+    }
+  </Body>
+  <Footer>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => modal.Close()">Close</button>
+  </Footer>
+</Modal>
+
+@code {
+  private Request selectedRequest;
+  private void DisplayDetails(Request request)
+  {
+    selectedRequest = request;
+    modal.Open();
+  }
+  private Modal modal { get; set; }
+    private List<Request> requests = new List<Request> {
+        new Request { RequestID = 1, StudentID = 12345, FullName = "John Doe", RequestDate = new DateTime(2023, 3, 6), DocType = "Example", Status = "Pending", Selected = false },
+        new Request { RequestID = 2, StudentID = 67890, FullName = "Jane Smith", RequestDate = new DateTime(2023, 3, 5), DocType = "Example", Status = "Approved", Selected = false },
+        new Request { RequestID = 3, StudentID = 24680, FullName = "Bob Johnson", RequestDate = new DateTime(2023, 3, 4), DocType = "Example", Status = "Pending", Selected = false },
+        new Request { RequestID = 5, StudentID = 13579, FullName = "Mary Lee", RequestDate = new DateTime(2023, 3, 3), DocType = "Example", Status = "Denied", Selected = false },
+        new Request { RequestID = 6, StudentID = 12345, FullName = "John Doe", RequestDate = new DateTime(2023, 3, 6), DocType = "Example", Status = "Pending", Selected = false },
+        new Request { RequestID = 7, StudentID = 67890, FullName = "Jane Smith", RequestDate = new DateTime(2023, 3, 5), DocType = "Example", Status = "Approved", Selected = false },
+        new Request { RequestID = 8, StudentID = 24680, FullName = "Bob Johnson", RequestDate = new DateTime(2023, 3, 4), DocType = "Example", Status = "Pending", Selected = false },
+        new Request { RequestID = 9, StudentID = 13579, FullName = "Mary Lee", RequestDate = new DateTime(2023, 3, 3), DocType = "Example", Status = "Denied", Selected = false },
+        new Request { RequestID = 10, StudentID = 12345, FullName = "John Doe", RequestDate = new DateTime(2023, 3, 6), DocType = "Example", Status = "Pending", Selected = false },
+        new Request { RequestID = 11, StudentID = 67890, FullName = "Jane Smith", RequestDate = new DateTime(2023, 3, 5), DocType = "Example", Status = "Approved", Selected = false },
+        new Request { RequestID = 12, StudentID = 24680, FullName = "Bob Johnson", RequestDate = new DateTime(2023, 3, 4), DocType = "Example", Status = "Pending", Selected = false },
+        new Request { RequestID = 13, StudentID = 13579, FullName = "Mary Lee", RequestDate = new DateTime(2023, 3, 3), DocType = "Example", Status = "Denied", Selected = false }
+    };
+    private void HandleSelection() {
+      
+        var selectedItems = requests.Where(i => i.Selected).ToList();
+        // Do something with the selected items
+    }
+
+    public class Request {
+        public int RequestID { get; set; }
+        public int StudentID { get; set; }
+        public string FullName { get; set; }
+        public DateTime RequestDate { get; set; }
+        public string DocType { get; set; }
+        public string Status { get; set; }
+        public bool Selected { get; set; }
+    }
+
+    private bool selectAll;
+
+    private void SelectAllChanged(bool value) {
+        foreach (var transaction in requests) {
+            transaction.Selected = value;
+        }
+    }
+
+    private bool IsSelectAllChecked { get; set; }
+
+    private void OnSelectAllChecked()
+    {
+        foreach (var transaction in requests) {
+            Logger.LogInformation($"Selected TransactionID: {transaction.RequestID} {transaction.StudentID}");
+            transaction.Selected = !IsSelectAllChecked;
+        }
+    }
+
+    private void HandleAction(Request transaction) {
+        // perform action on selected transaction
+    }
+
+    protected override void OnParametersSet()
+    {
+        // Check if all items are selected
+        IsSelectAllChecked = requests != null && requests.All(x => x.Selected);
+    }
+}
