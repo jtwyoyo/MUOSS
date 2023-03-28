@@ -1,0 +1,302 @@
+﻿@page "/transactionsunused"
+@using Microsoft.Extensions.Logging
+@using RequestManagement.Shared
+@inject HttpClient Http
+@inject ILogger<Transactions> Logger
+
+<PageTitle>Index</PageTitle>
+@if (transactions == null)
+{
+    <p>Loading users...</p>
+}
+else
+{
+    <div class="container-fluid m">
+        <div class="row m-4">
+            <div class="col-md-2 bg-light h-100">
+                <h3>Filter</h3>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne"
+                                    aria-expanded="true"
+                                    aria-controls="collapseOne">
+                                Status
+                            </button>
+                        </h2>
+                        <div id="collapseOne"
+                             class="accordion-collapse collapse show"
+                             aria-labelledby="headingOne"
+                             data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" @onclick="@(()=>showingTransactions=transactions)" checked>
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        All
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" @onclick="@(()=>FilterStatus("Pending"))">
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        Waiting for approval
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" @onclick="@(()=>FilterStatus("Approved"))">
+                                    <label class="form-check-label" for="flexRadioDefault3">
+                                        Success
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-10">
+                <div class="row g-3">
+                    <div class="col-sm-4">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Search by student name or ID">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Faculty</option>
+                            <option value="ICT">Faculty of Information and Communication Technology</option>
+                            <option value="MT">Faculty of Medical Technology</option>
+                            <option value="PH">Faculty of Pharmacy</option>
+                            <option value="">Faculty of Tropical Medicine</option>
+                            <option value="">Faculty of Medicine Siriraj Hospital</option>
+                            <option value="">Faculty of Physical Therapy</option>
+                            <option value="DT">Faculty of Dentistry</option>
+                            <option value="">Faculty of Nursing</option>
+                            <option value="SC">Faculty of Science</option>
+                            <option value="EG">Faculty of Engineering</option>
+                            <option value="LA">Faculty of Liberal Arts</option>
+                            <option value="SH">Faculty of Social Sciences and Humanities</option>
+                            <option value="VT">Faculty of Veterinary Science</option>
+                            <option value="">Faculty of Public Health</option>
+                            <option value="EN">Faculty of Environment and Resource Studies</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Major</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="input-group mb-3">
+                            Date Range
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon3">Sort By</span>
+                            <select @bind="@ColSort" class="form-select" id="basic-url" aria-describedby="basic-addon3">
+                                <option value="TransactionID">TransactionID</option>
+                                <option value="StudentID">StudentID</option>
+                                <option value="FullName">FullName</option>
+                                <option value="PaymentDate">PaymentDate</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <input type="checkbox" @bind="IsSelectAllChecked" @onclick="OnSelectAllChecked" />
+                            </th>
+                            <th scope="col">TransactionID</th>
+                            <th scope="col">StudentID</th>
+                            <th scope="col">FullName</th>
+                            <th scope="col">RequestDate</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        @foreach (var transaction in showingTransactions)
+                        {
+                            <tr>
+                                <td>
+                                    <EditForm Model="TransactionModel">
+                                        <InputCheckbox Value="transaction.IsSelected"
+                                               ValueChanged="@((e) => {
+                                            transaction.IsSelected=e;
+                                            selectedTransactions.UnionWith(showingTransactions.Where(t => t.IsSelected == true));
+                                            CheckboxChanged();
+                                        })"
+                                               ValueExpression="(()=>transaction.IsSelected)" />
+                                    </EditForm>
+                                           </td>
+                                <td>@transaction.TransactionID</td>
+                                <td>@transaction.StudentID</td>
+                                <td>@transaction.FullName</td>
+                                <td>@transaction.RequestDate.ToShortDateString()</td>
+                                <td>@transaction.Amount</td>
+                                <td>@transaction.Status</td>
+                                <td>
+                                    @if (transaction.Status == "Pending")
+                                    {
+                                        <button class="btn btn-outline-success btn-sm" @onclick="()=>HandleAction(transaction)">
+                                            Approve
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Transaction> transactions;
+    private List<Transaction> showingTransactions;
+    public HashSet<Transaction> selectedTransactions = new HashSet<Transaction>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        transactions = await Http.GetFromJsonAsync<List<Transaction>>("Transaction");
+        showingTransactions = transactions;
+    }
+    private bool selectAll;
+    private bool IsSelectAllChecked { get; set; } = false;
+
+    public void CheckboxChanged(bool e, Transaction t)
+    {
+        //selectedTransactions.UnionWith(showingTransactions.Where(t => t.IsSelected == true));
+        foreach (var transaction in selectedTransactions)
+        {
+            Logger.LogInformation($"Transaction ID in the set: {transaction.TransactionID}");
+
+        }
+    }
+
+    public void CheckboxChanged()
+    {
+        //selectedTransactions.UnionWith(showingTransactions.Where(t => t.IsSelected == true));
+        foreach (var transaction in selectedTransactions)
+        {
+            Logger.LogInformation($"Transaction ID in the set: {transaction.TransactionID}");
+
+        }
+    }
+
+    private string _ColSort;
+    public string ColSort
+    {
+        get { return _ColSort; }
+        set
+        {
+            _ColSort = value;
+            SortTable(ColSort);
+        }
+    }
+    private List<Transaction> SortTable(string ColSort)
+    {
+        //Do something
+        if (ColSort == "TransactionID")
+        {
+            showingTransactions.Sort(compareTransactionID);
+        }
+        if (ColSort == "StudentID")
+        {
+            showingTransactions.Sort(compareStudentID);
+        }
+        return showingTransactions;
+    }
+
+    private void HandleSelection(ChangeEventArgs args, int id)
+    {
+        Logger.LogInformation($"Selected TransactionID: {id}");
+        bool isChecked = (bool)args.Value;
+
+        Transaction selectedItem = transactions.Find(t => t.TransactionID == id);
+        if (!isChecked && selectedTransactions.Contains(selectedItem))
+        {
+            selectedTransactions.Remove(selectedItem);
+        }
+        if (isChecked && !selectedTransactions.Contains(selectedItem))
+        {
+            selectedTransactions.Add(selectedItem);
+        }
+
+        Logger.LogInformation($"{selectedTransactions.Count}");
+        foreach (Transaction selected in selectedTransactions)
+        {
+            Logger.LogInformation($"Transaction ID in the set: {selected.TransactionID}");
+        }
+    }
+
+
+    private void OnSelectAllChecked()
+    {
+        IsSelectAllChecked = !IsSelectAllChecked;
+
+        if (!IsSelectAllChecked)
+        {
+            selectedTransactions.ExceptWith(transactions);
+            transactions.ForEach(t => t.IsSelected = false);
+        }
+        else
+        {
+            selectedTransactions.UnionWith(transactions);
+            transactions.ForEach(t => t.IsSelected = true);
+        }
+
+        foreach (var transaction in selectedTransactions)
+        {
+            Logger.LogInformation($"Selected TransactionID: {transaction.TransactionID} {transaction.StudentID}");
+        }
+    }
+
+    private void HandleAction(Transaction transaction)
+    {
+        transaction.Status = "Approved";
+    }
+
+
+    public void FilterStatus(string status)
+    {
+        showingTransactions = transactions.Where(t => t.Status == status).ToList();
+    }
+
+
+    public int compareTransactionID(Transaction t1, Transaction t2)
+    {
+        if (t1.TransactionID > t2.TransactionID) return 1;
+        else if (t1.TransactionID < t2.TransactionID) return -1;
+        else return 0;
+    }
+    public int compareStudentID(Transaction t1, Transaction t2)
+    {
+        if (t1.StudentID > t2.StudentID) return 1;
+        else if (t1.StudentID < t2.StudentID) return -1;
+        else return 0;
+    }
+
+    private Transaction TransactionModel = new();
+    private EditContext? editContext;
+    private void HandleValidSubmit()
+    {
+        Logger.LogInformation("HandleValidSubmit called");
+
+        // Process the valid form
+    }
+}

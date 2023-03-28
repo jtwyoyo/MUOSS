@@ -1,0 +1,141 @@
+﻿@*@using MUxICT_OSS.Client.Shared.CultureSelector*@
+
+
+@*<MudNavMenu Bordered="true" Style="height: 100vh; display: flex; flex-direction: column; justify-content: space-between">
+    <div>
+        <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Outlined.Dashboard">Dashboard</MudNavLink>
+        <MudNavLink Href="users/new" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Add">Add User</MudNavLink>
+        <MudNavLink Href="users" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.List">Fetch data</MudNavLink>
+    </div>
+</MudNavMenu>*@
+
+@*<nav class="@MaterialNavClass">
+    <div class="container">
+        <a class="navbar-brand" href="">MUOSS</a>
+        <button class="navbar-toggler" type="button" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <NavLink Match="NavLinkMatch.All" class="nav-link text-dark" href="">
+                        <MudIcon Icon="@Icons.Material.Filled.Dashboard" aria-hidden="true"/> Dashboard
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink Match="NavLinkMatch.All" class="nav-link text-dark" href="users/new">
+                        <MudIcon Icon="@Icons.Material.Filled.Add" aria-hidden="true"/> New user
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink Match="NavLinkMatch.All" class="nav-link text-dark" href="users">
+                        <MudIcon Icon="@Icons.Material.Filled.List" aria-hidden="true" /> User list
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+        <CultureSelector />
+        <MudToggleIconButton @bind-Toggled="@isDarkMode" ToggledIcon="@Icons.Material.Filled.DarkMode" Icon="@Icons.Material.Filled.LightMode" Color="Color.Inherit" />
+        <MudMenu FullWidth="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+
+            <ActivatorContent>
+                <MudChip Icon="@Icons.Material.Filled.Person" Color="Color.Primary">Account</MudChip>
+            </ActivatorContent>
+            <ChildContent>
+                <MudMenuItem>Profile</MudMenuItem>
+                <MudMenuItem>Theme</MudMenuItem>
+                <MudMenuItem>Usage</MudMenuItem>
+                <MudMenuItem>Sign Out</MudMenuItem>
+            </ChildContent>
+        </MudMenu>
+    </div>
+</nav>*@
+<nav class="navbar navbar-dark navbar-expand-lg bg-body-tertiary outline-bottom box-shadow" style="background-color: #0035AD;">
+    <div class="container">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-lg-0">
+                <li class="nav-item">
+                    <NavLink class="nav-link" aria-current="page" href="dashboard">Dashboard</NavLink>
+                </li>
+                <li class="nav-item dropdown">
+                    <NavLink class="nav-link dropdown-toggle"
+                             href="docrequest"
+                             id="navbarDropdown"
+                             role="button"
+                             data-bs-toggle="dropdown"
+                             aria-expanded="false">
+                        Documents
+                    </NavLink>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="docrequest">By Requests</a></li>
+                        <li><a class="dropdown-item" href="#">By RequestItems</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" aria-current="page" href="namechange">Name Changing</NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" aria-current="page" href="newstudentid">New StudentID Card</NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" aria-current="page" href="transactionsdata">Transaction</NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" aria-current="page" href="transactions">Parcel</NavLink>
+                </li>
+            </ul>
+            <CultureSelector />
+            <MudToggleIconButton @bind-Toggled="@isDarkMode" ToggledIcon="@Icons.Material.Filled.DarkMode" Icon="@Icons.Material.Filled.LightMode" Color="Color.Secondary" />
+            <MudMenu FullWidth="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+
+                <ActivatorContent>
+                    <MudChip Icon="@Icons.Material.Filled.Person" Color="Color.Primary">Account</MudChip>
+                </ActivatorContent>
+                <ChildContent>
+                    <MudMenuItem>Profile</MudMenuItem>
+                    <MudMenuItem>Theme</MudMenuItem>
+                    <MudMenuItem>Usage</MudMenuItem>
+                    <MudMenuItem>Sign Out</MudMenuItem>
+                </ChildContent>
+            </MudMenu>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private bool _isDarkMode;
+
+    [Parameter]
+    public bool isDarkMode
+    {
+        get => _isDarkMode;
+        set
+        {
+            if (_isDarkMode == value) return;
+            _isDarkMode = value;
+            IsDarkModeChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<bool> IsDarkModeChanged { get; set; }
+
+    private bool collapseNavMenu = true;
+    private string? NavBarCssClass => collapseNavMenu ? null : "show";
+    private string? NavButtonCssClass => collapseNavMenu ? "collapsed" : null;
+
+    string MaterialNavClass = "navbar navbar-expand-md navbar-light bg-light mb-4 border-bottom box-shadow";
+
+    string baseMenuClass = "navbar-collapse d-sm-inline-flex flex-sm-row-reverse";
+
+    string NavMenuCssClass => baseMenuClass + (collapseNavMenu ? " collapse" : "");
+
+    void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Components;
+@using Microsoft.JSInterop;
+@using System.Globalization;
+@using MudBlazor
+
+@*<MudSelect @bind-Value="@Culture" Margin="Margin.Dense" Variant="Variant.Outlined"
+           AdornmentColor="Color.Secondary" Style="justify-content: flex-end;">
+    @foreach(CultureInfo culture in cultures)
+    {
+        <MudSelectItem Value="@culture">
+            <img src=@($"images/{culture.DisplayName}.png") height="14" class="mr-1" /> @culture.DisplayName
+        </MudSelectItem>
+    }
+</MudSelect>*@
+
+<style>
+    .mud-appbar .mud-select {
+        flex-grow: 0;
+    }
+</style>
+@*<MudChipSet>
+    @foreach (CultureInfo culture in cultures)
+    {
+        <MudChip Text="grey"><img src=@($"images/{culture.DisplayName}.png") height="14" class="mr-1" />Default</MudChip>
+    }
+</MudChipSet>*@
+
+<select class="form-select d-inline" @bind="Culture" style="width:200px; margin-left:10px;">
+    @foreach (var culture in cultures)
+    {
+        <option value="@culture">@culture.DisplayName</option>
+    }
+</select>
+
+<style>
+    .bootstrap-select .btn:focus {
+        outline: none !important;
+    }
+</style>
+
+@code {
+    [Inject]
+    public NavigationManager NavManager { get; set; }
+    [Inject]
+    public IJSRuntime JSRuntime { get; set; }
+    CultureInfo[] cultures = new[]
+    {
+        new CultureInfo("en-US"),
+        new CultureInfo("th-TH")
+    };
+    CultureInfo Culture
+    {
+        get => CultureInfo.CurrentCulture;
+        set
+        {
+            if (CultureInfo.CurrentCulture != value)
+            {
+                var js = (IJSInProcessRuntime)JSRuntime;
+                js.InvokeVoid("blazorCulture.set", value.Name);
+                NavManager.NavigateTo(NavManager.Uri, forceLoad: true);
+            }
+        }
+    }
+}
