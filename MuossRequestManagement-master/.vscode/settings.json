@@ -1,0 +1,8 @@
+{
+    "[csharp]": {
+        "editor.maxTokenizationLineLength": 300
+    },
+    "[java]": {
+        "editor.maxTokenizationLineLength": 300
+    }
+}
